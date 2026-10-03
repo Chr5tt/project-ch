@@ -23,7 +23,7 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 
 ## 🎬 Preview
 
-https://github.com/user-attachments/assets/be90546a-5ae2-4e8f-b262-c0df1eaf7b39
+<img width="800" height="450" alt="lamp-login-animation-codebygauravk-google-chrome-2026-10-03-13-11-18_1CdQebFZonline-video-cutter com1-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/b83dfacc-d5c4-4363-a606-716c961abf2f" />
 
 ---
 

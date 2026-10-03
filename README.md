@@ -22,6 +22,7 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 ---
 
 ## 🎬 Preview
+
 <img width="788" height="449" alt="preview" src="https://github.com/user-attachments/assets/36d4c03b-b80c-490e-8fb1-407ca1179c75" />
 
 ---
@@ -39,7 +40,7 @@ This project is built as a clean, single-file application for easy deployment an
 
 ## 🚀 Quick Start
 
-No installation or build steps are required. Simply open `index.html` in your favorite web browser!
+No installation or build steps are required. Simply open `lamp_login_animation.html` in your favorite web browser!
 
 1. **Clone the repository**:
    ```bash
@@ -50,7 +51,7 @@ No installation or build steps are required. Simply open `index.html` in your fa
    cd project-ch
    ```
 3. **Open in browser**:
-   - Double-click `index.html`, or
+   - Double-click `lamp_login_animation.html`, or
    - Use Live Server extension in VS Code.
 
 ---

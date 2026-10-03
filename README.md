@@ -27,17 +27,6 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 
 ---
 
-## 📁 File Structure
-
-This project is built as a clean, single-file application for easy deployment and hosting:
-
-```
-├── index.html       # Combined HTML, CSS, and JS code
-└── README.md        # Project documentation
-```
-
----
-
 ## 🚀 Quick Start
 
 No installation or build steps are required. Simply open `lamp_login_animation.html` in your favorite web browser!
@@ -63,12 +52,6 @@ No installation or build steps are required. Simply open `lamp_login_animation.h
 - **Vanilla JavaScript** (DOM manipulation & Canvas API)
 - **Web Audio API** (Procedural sound generation)
 - **FontAwesome** (UI icons)
-
----
-
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 

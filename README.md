@@ -46,7 +46,7 @@ No installation or build steps are required. Simply open `index.html` in your fa
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/lamp-login-animation.git
+   git clone https://github.com/Chr5tt/lamp-login-animation.git
    ```
 2. **Navigate into the directory**:
    ```bash

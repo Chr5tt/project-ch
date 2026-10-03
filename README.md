@@ -22,10 +22,7 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 ---
 
 ## 🎬 Preview
-
 <img width="788" height="449" alt="preview" src="https://github.com/user-attachments/assets/36d4c03b-b80c-490e-8fb1-407ca1179c75" />
-
-![Lamp Login Animation Preview](./preview.gif)
 ---
 
 ## 📁 File Structure

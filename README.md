@@ -23,9 +23,7 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 
 ## 🎬 Preview
 
-> *Note: Place a GIF or video preview of your project below!*
-
-![Demo Animation](https://user-images.githubusercontent.com/placeholder-demo.gif)
+https://github.com/user-attachments/assets/be90546a-5ae2-4e8f-b262-c0df1eaf7b39
 
 ---
 
@@ -46,11 +44,11 @@ No installation or build steps are required. Simply open `index.html` in your fa
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Chr5tt/lamp-login-animation.git
+   git clone https://github.com/Chr5tt/project-ch.git
    ```
 2. **Navigate into the directory**:
    ```bash
-   cd lamp-login-animation
+   cd project-ch
    ```
 3. **Open in browser**:
    - Double-click `index.html`, or

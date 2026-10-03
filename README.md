@@ -29,7 +29,7 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 
 ## 🚀 Quick Start
 
-No installation or build steps are required. Simply open `lamp_login_animation.html` in your favorite web browser!
+No installation or build steps are required. Simply open `index.html` in your favorite web browser!
 
 1. **Clone the repository**:
    ```bash
@@ -40,7 +40,7 @@ No installation or build steps are required. Simply open `lamp_login_animation.h
    cd project-ch
    ```
 3. **Open in browser**:
-   - Double-click `lamp_login_animation.html`, or
+   - Double-click `index.html`, or
    - Use Live Server extension in VS Code.
 
 ---

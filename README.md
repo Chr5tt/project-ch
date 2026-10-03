@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamp Login Animation | CodeByGauravk</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #07080a;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Room background lighting effect */
+        .room {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 25% 20%, #151821 0%, #07080a 80%);
+            z-index: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        body.light-on .room {
+            background: radial-gradient(circle at 25% 20%, #2b261e 0%, #0e0f14 80%);
+        }
+
+        /* Ambient light overlay emanating from the lamp */
+        .room-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: radial-gradient(circle at 220px 180px, rgba(255, 208, 115, 0.25) 0%, rgba(255, 185, 70, 0.08) 35%, transparent 70%);
+        }
+
+        body.light-on .room-light {
+            opacity: 1;
+        }
+
+        /* Light Cone Projector effect - Perfectly straight vertical beam */
+        .light-cone {
+            position: absolute;
+            top: 175px;
+            left: -80px;
+            width: 600px;
+            height: 1000px;
+            background: linear-gradient(180deg, rgba(255, 225, 140, 0.5) 0%, rgba(255, 195, 80, 0.15) 35%, rgba(255, 180, 50, 0.02) 80%, transparent 100%);
+            clip-path: polygon(calc(50% - 20px) 0%, calc(50% + 20px) 0%, 100% 100%, 0% 100%);
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0;
+            transform-origin: top center;
+            transition: opacity 0.5s ease-in-out;
+            filter: blur(8px);
+        }
+
+        body.light-on .light-cone {
+            opacity: 1;
+        }
+
+        /* Lamp Container Assembly */
+        .lamp-container {
+            position: absolute;
+            top: 0;
+            left: 170px;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: top center;
+            transition: transform 0.3s ease-out;
+        }
+
+        .lamp-wire {
+            width: 3px;
+            height: 110px;
+            background: linear-gradient(90deg, #1a1a1a, #444, #1a1a1a);
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .lamp-cap {
+            width: 24px;
+            height: 12px;
+            background: linear-gradient(90deg, #2a2a2a, #666, #2a2a2a);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .lamp-shade {
+            width: 100px;
+            height: 55px;
+            background: linear-gradient(180deg, #1c1d22 0%, #2a2c33 100%);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border-bottom: 2px solid #3a3d47;
+        }
+
+        .lamp-bulb {
+            width: 34px;
+            height: 22px;
+            background: #4a4d56;
+            border-radius: 0 0 17px 17px;
+            margin-top: -2px;
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        body.light-on .lamp-bulb {
+            background: #fff5c0;
+            box-shadow: 0 0 30px #ffd000, 0 0 60px #ffae00, 0 0 90px #ff8c00;
+        }
+
+        /* Interactive Cord Switch */
+        .lamp-cord-wrapper {
+            position: absolute;
+            top: 150px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            z-index: 25;
+            padding: 10px;
+        }
+
+        .lamp-cord {
+            width: 2px;
+            height: 80px;
+            background: repeating-linear-gradient(0deg, #888, #888 3px, #444 3px, #444 6px);
+            transition: height 0.15s ease-out;
+            transform-origin: top center;
+        }
+
+        .lamp-handle {
+            width: 12px;
+            height: 18px;
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            transition: transform 0.15s ease-out;
+        }
+
+        .lamp-cord-wrapper:hover .lamp-handle {
+            filter: brightness(1.2);
+            transform: scale(1.1);
+        }
+
+        .lamp-cord-wrapper.pulling .lamp-cord {
+            height: 105px;
+        }
+
+        .lamp-cord-wrapper.pulling .lamp-handle {
+            transform: translateY(25px);
+        }
+
+        canvas#fireflies {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        /* Login Form Card UI */
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+            margin-left: auto;
+            margin-right: 10%;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.96);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.5s ease;
+            pointer-events: none;
+        }
+
+        body.light-on .login-wrapper {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        @media (max-width: 900px) {
+            .login-wrapper {
+                margin: 0 auto;
+                padding-top: 140px;
+            }
+            .lamp-container {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .light-cone {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .room-light {
+                background: radial-gradient(circle at 50% 180px, rgba(255, 208, 115, 0.25) 0%, rgba(255, 185, 70, 0.08) 35%, transparent 70%);
+            }
+        }
+
+        .login-card {
+            background: rgba(18, 20, 26, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px 36px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            transition: border-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        body.light-on .login-card {
+            border-color: rgba(255, 200, 100, 0.25);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 180, 50, 0.12);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i.input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 16px 14px 46px;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field::placeholder {
+            color: #6b7280;
+        }
+
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+        }
+
+        .input-field:focus + .input-icon {
+            color: #eab308;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #ffffff;
+        }
+
+        /* Primary Glow Button */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #eab308, #ca8a04);
+            color: #000000;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(234, 179, 8, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #facc15, #d97706);
+            box-shadow: 0 6px 25px rgba(234, 179, 8, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        /* Social Button Styling */
+        .btn-social {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-social:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient Room Overlay -->
+    <div class="room" id="room"></div>
+    <div class="room-light" id="roomLight"></div>
+    <div class="light-cone" id="lightCone"></div>
+
+    <!-- Fireflies Particle Canvas -->
+    <canvas id="fireflies"></canvas>
+
+    <!-- Hanging Lamp Fixture Assembly -->
+    <div class="lamp-container" id="lampContainer">
+        <div class="lamp-wire"></div>
+        <div class="lamp-cap"></div>
+        <div class="lamp-shade"></div>
+        <div class="lamp-bulb" id="lampBulb"></div>
+
+        <!-- Cord Switch hanging next to the lamp shade -->
+        <div class="lamp-cord-wrapper" id="lampCord" title="Click to toggle light">
+            <div class="lamp-cord"></div>
+            <div class="lamp-handle"></div>
+        </div>
+    </div>
+
+    <!-- Main Login Interface Container -->
+    <div class="login-wrapper">
+        <div class="login-card">
+            <!-- Header Title -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-white tracking-tight mb-2">Welcome Back</h1>
+                <p class="text-gray-400 text-sm">Enter your details to access your account</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <!-- Username Input -->
+                <div class="input-group">
+                    <input type="text" id="username" class="input-field" placeholder="Username" required autocomplete="off">
+                    <i class="fa-regular fa-user input-icon"></i>
+                </div>
+
+                <!-- Email Input -->
+                <div class="input-group">
+                    <input type="email" id="email" class="input-field" placeholder="Email Address" required autocomplete="off">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-group">
+                    <input type="password" id="password" class="input-field" placeholder="Password" required>
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <i class="fa-regular fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                </div>
+
+                <!-- Sign In Action Button -->
+                <button type="submit" class="btn-primary mt-2" id="submitBtn">
+                    <span>Sign In</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </form>
+
+            <!-- Social Login Divider -->
+            <div class="relative my-6 text-center">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-800"></div>
+                </div>
+                <span class="relative px-3 bg-[#12141a] text-xs uppercase tracking-wider text-gray-500 font-medium">
+                    OR CONTINUE WITH
+                </span>
+            </div>
+
+            <!-- Social Login Options -->
+            <div class="flex gap-3">
+                <button type="button" class="btn-social" onclick="showToast('Google login initiated')">
+                    <i class="fa-brands fa-google text-red-400"></i>
+                    <span>Google</span>
+                </button>
+                <button type="button" class="btn-social" onclick="showToast('GitHub login initiated')">
+                    <i class="fa-brands fa-github text-white"></i>
+                    <span>GitHub</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Message -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check text-yellow-400 text-lg" id="toastIcon"></i>
+        <span id="toastMsg" class="text-sm font-medium">Action successful</span>
+    </div>
+
+    <script>
+        // Web Audio API context for click sound generation
+        let audioCtx = null;
+
+        function playClickSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {
+                // Audio fallback if restricted by browser autoplay
+            }
+        }
+
+        // Toggle Light Switch Logic
+        const lampCord = document.getElementById('lampCord');
+        const lampContainer = document.getElementById('lampContainer');
+
+        function toggleLight() {
+            playClickSound();
+            
+            // Visual Cord Pull Animation
+            lampCord.classList.add('pulling');
+            setTimeout(() => {
+                lampCord.classList.remove('pulling');
+            }, 180);
+
+            // Subtle Lamp Swaying Motion
+            lampContainer.style.transform = 'rotate(2.5deg)';
+            setTimeout(() => {
+                lampContainer.style.transform = 'rotate(-1.5deg)';
+                setTimeout(() => {
+                    lampContainer.style.transform = 'rotate(0deg)';
+                }, 150);
+            }, 150);
+
+            // Toggle Body Light State
+            document.body.classList.toggle('light-on');
+        }
+
+        lampCord.addEventListener('click', toggleLight);
+
+        // Password Visibility Toggle Function
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
+            
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Fireflies Animation Logic
+        const canvas = document.getElementById('fireflies');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Firefly {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.5 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.opacity = Math.random();
+                this.fadeSpeed = Math.random() * 0.02 + 0.005;
+                this.fadeDirection = Math.random() > 0.5 ? 1 : -1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > width) this.speedX *= -1;
+                if (this.y < 0 || this.y > height) this.speedY *= -1;
+
+                this.opacity += this.fadeSpeed * this.fadeDirection;
+                if (this.opacity >= 1) {
+                    this.opacity = 1;
+                    this.fadeDirection = -1;
+                } else if (this.opacity <= 0.1) {
+                    this.opacity = 0.1;
+                    this.fadeDirection = 1;
+                }
+            }
+
+            draw() {
+                const isLightOn = document.body.classList.contains('light-on');
+                const alpha = isLightOn ? this.opacity : this.opacity * 0.2;
+
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 215, 100, ${alpha})`;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#ffd000';
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset blur for performance
+            }
+        }
+
+        const firefliesArray = [];
+        const particleCount = 45;
+
+        for (let i = 0; i < particleCount; i++) {
+            firefliesArray.push(new Firefly());
+        }
+
+        function animateFireflies() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < firefliesArray.length; i++) {
+                firefliesArray[i].update();
+                firefliesArray[i].draw();
+            }
+            requestAnimationFrame(animateFireflies);
+        }
+
+        window.onload = function() {
+            animateFireflies();
+        };
+
+        // Toast Alert Manager
+        let toastTimeout;
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = message;
+            toastIcon.className = isSuccess 
+                ? 'fa-solid fa-circle-check text-yellow-400 text-lg'
+                : 'fa-solid fa-circle-exclamation text-red-400 text-lg';
+
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Handle Form Submission
+        function handleLogin(event) {
+            event.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const username = document.getElementById('username').value;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Signing in...</span>`;
+
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>Sign In</span><i class="fa-solid fa-arrow-right text-sm"></i>`;
+                showToast(`Welcome back, ${username}! Login successful.`);
+            }, 1200);
+        }
+    </script>
+</body>
+</html>

@@ -15,7 +15,7 @@ An interactive, responsive, and aesthetically pleasing Login Page featuring a ha
 - 👻 **Dynamic Visibility**: The entire Login Form container automatically hides in the dark when the light is off and smoothly fades/pops up when switched on.
 - 🔦 **Straight Light Beam**: Vertical light cone effect projecting directly beneath the lamp shade.
 - 🔊 **Web Audio Sound**: Synthetic click/pull audio sound effect generated in real-time using native Web Audio API (no external sound files required).
-- 🪰 **Ambient Fireflies**: Animated Canvas particles that drift and glow dynamically depending on the lighting state.
+- 🌟 **Ambient Fireflies**: Animated Canvas particles that drift and glow dynamically depending on the lighting state.
 - 👁️ **Password Toggle**: Easily reveal or hide the password input field.
 - 📱 **Fully Responsive Layout**: Perfectly styled for both Desktop and Mobile viewports.
 
